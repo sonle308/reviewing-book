@@ -1,0 +1,43 @@
+{% extends 'library/template.html' %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            {% for book in books %}
+                <div class="col-md-4">
+                    <div class="card shadow">
+                        <img class="card-img-top" src="{{ book.image }}" alt="image">
+                        <div onclick="favorite({{ book.id }}, {{ book.userbook__is_favorite|yesno:"false,true" }})"
+                            class="favorite position-absolute ml-2 mt-2 h4 {% if book.userbook__is_favorite %} text-danger {% else %} text-white {% endif %}"
+                        >
+                            <span><i class="fa fa-heart"></i></span>
+                        </div>
+                        <div onclick="reading({{ book.id }}, {{ book.userbook__is_reading|yesno:"false,true" }})"
+                            class="reading position-absolute h2 {% if book.userbook__is_reading %} text-warning {% else %} text-white {% endif %}"
+                            style="right: 8px;top: -5px"
+                        >
+                            <span><i class="fa fa-bookmark"></i></span>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">{{ book.title }}</h5>
+                            <p class="card-text">{{ book.description }}</p>
+                        </div>
+                        <div class="card-footer d-flex">
+                            <div class="rating w-50">
+                                <span onclick="rating({{ book.id }}, 1)"><i id="{{ book.id }}-star-1" class="fa fa-star-o"></i></span>
+                                <span onclick="rating({{ book.id }}, 2)"><i id="{{ book.id }}star-2" class="fa fa-star-o"></i></span>
+                                <span onclick="rating({{ book.id }}, 3)"><i id="{{ book.id }}star-3" class="fa fa-star-o"></i></span>
+                                <span onclick="rating({{ book.id }}, 4)"><i id="{{ book.id }}star-4" class="fa fa-star-o"></i></span>
+                                <span onclick="rating({{ book.id }}, 5)"><i id="{{ book.id }}star-5" class="fa fa-star-o"></i></span>
+                            </div>
+                            <div class="status w-50 text-right">
+                                <span onclick="done({{ book.id }})"><i class="fa fa-check"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}}
