@@ -10,11 +10,13 @@ def landing_page(request):
                                                                  'title',
                                                                  'description',
                                                                  'image',
-                                                                 'rating',
+                                                                 'userbook__rating',
                                                                  'userbook__is_favorite',
-                                                                 'userbook__is_reading'   
+                                                                 'userbook__is_reading',
+                                                                 'userbook__is_read'   
                                                                 )
-    return render(request, 'library/landing_page.html', {'user': request.user, 'books': books})
+    json_serializer = serializers.get_serializer("json")()
+    return render(request, 'library/landing_page.html', {'user': request.user, 'books': books, 'data': json.dumps(list(books))})
 
 def rating_book(request):
     data = json.loads(request.body)
@@ -55,5 +57,23 @@ def favorite_book(request):
         userBook = UserBook.objects.create(user_id=userId, book_id=bookId)
     userBook.is_favorite = isFavorite
     userBook.save()
+
+    return HttpResponse(True)
+
+def read_book(request):
+    data = json.loads(request.body)
+    isRead = data["isRead"]
+    bookId = data["bookId"]
+    userId = request.user.id
+    try:
+        userBook = UserBook.objects.get(user_id=userId, book_id=bookId)
+    except Exception as e:
+        userBook = UserBook.objects.create(user_id=userId, book_id=bookId)
+    userBook.is_read = isRead
+    userBook.save()
+
+    return HttpResponse(True)
+
+def book_detail(request):
 
     return HttpResponse(True)

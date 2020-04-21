@@ -7,7 +7,6 @@ class Book(models.Model):
     image = models.CharField(max_length=255)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    rating = models.PositiveSmallIntegerField(default=0)
 
 class UserBook(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
